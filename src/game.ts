@@ -1,3 +1,4 @@
+// ./node_modules/.bin/tsc src/index.ts --module amd  ./src/game.ts
 
 interface IGameState {
   gameCode: "cm";
@@ -61,7 +62,6 @@ export class Game {
   }
 
   render() {
-    const marker = "◉";
     const backgroundColor = "cyan";
     const markerSize = 15;
 
@@ -72,17 +72,16 @@ export class Game {
     function getButton(color: string, gamestate: IGameState) {
       const base32 = new Base32();
       const gs = base32.encode(JSON.stringify(gamestate));
-      // const link = `#r-chatplus(**),${gs}`;
-      const link = `<a href="#" data-gamestate="${gs}" data-player="${gamestate.whichPlayer}">**</a>`;
+      const link = `#r-jsgames(**),${gs}`;
+      // const link = `<a href="#" data-gamestate="${gs}" data-player="${gamestate.whichPlayer}">**</a>`;
       return getMarker(color, link);
     }
-
 
     let html = `<center>The Captain's Mistress:<br>
             Another mediocre game from At<b></b>helon.</center>`;
 
-    html += `<i>${this.gameState.player1}</i> vs <i>${this.gameState.player2}</i><br>`;
-    html += `${this.gameState.whichPlayer}!  It's your go.  Turn: ${this.gameState.turn + 1}<br>`;
+    html += `<i>${this.gameState.player1.split("").join("<b></b>")}</i> vs <i>${this.gameState.player2.split("").join("<b></b>")}</i><br>`;
+    html += `${this.gameState.whichPlayer.split("").join("<b></b>")}!  It's your go.  Turn: ${this.gameState.turn + 1}<br>`;
 
     html += `<pre style="line-height: 0.5; display:inline-block; background-color:${backgroundColor}">`;
 
@@ -133,10 +132,15 @@ export class Game {
 
   processTurn(user: string, gameStatestr: string) {
     const base32 = new Base32();
-    const gameState = JSON.parse(base32.decode(gameStatestr));
+    const gameState: IGameState = JSON.parse(base32.decode(gameStatestr));
 
-    if (user !== gameState.whichPlayer) {
-      alert(`Sorry, ${user}, it is not your turn.`);
+    const realPlayer = gameState.whichPlayer === gameState.player1 ? gameState.player2 : gameState.player1;
+    const wp = realPlayer.toLowerCase().replace(/[^a-z0-0]/g, "");
+    const cp = user.toLowerCase().replace(/[^a-z0-0]/g, "");
+
+    if (wp.indexOf(cp) !== 0) {
+      alert(`Sorry, ${user}, it is not your turn.  It is ${realPlayer}'s turn.'`);
+      this.submitCallback(null);
     }
 
     this.gameState = gameState;
