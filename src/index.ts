@@ -7,7 +7,7 @@ export default class Main {
     console.log('Typescript Webpack starter launched');
 
     this.mistress = new game.Game();
-    this.mistress.setDevLinkType();
+    // this.mistress.setDevLinkType();
     this.mistress.init("NPC1", "Goulag, the un-moving", "multiloc@soi");
     this.mistress.setSubmitAction(this.mainLoop);
     this.mainLoop(this.mistress);

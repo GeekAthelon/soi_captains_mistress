@@ -18,8 +18,6 @@ const cellP1 = 1;
 const cellP2 = 2;
 
 type cellType = 9 | 1 | 2;
-
-
 let soiLinkType = true;
 
 export class Game {
@@ -96,10 +94,11 @@ export class Game {
 
   render() {
     const backgroundColor = "cyan";
-    const markerSize = 15;
+    const markerSize = 7;
+    const gameDisk = "●";
 
-    function getMarker(color: string, text = " ") {
-      return `<span style="text-decoration: none!important; display: inline-block; border-radius: 50%; width: ${markerSize}px; height: ${markerSize}px; background: ${color}">${text}</span>`;
+    function getMarker(color: string) {
+      return `<font size="${markerSize}" color="${color}">${gameDisk}</font>`;
     }
 
     function getButton(color: string, gamestate: IGameState) {
@@ -108,16 +107,16 @@ export class Game {
       let link: string;
 
       if (soiLinkType) {
-        link = `#r-jsgames(**),${gs}`;
+        link = `<font size="${markerSize}" color="${color}">#r-jsgames(${gameDisk}),${gs}</font>`
       } else {
         let player = gamestate.player1;
         if (player === gamestate.whichPlayer) {
           player = gamestate.player2;
         }
 
-        link = `<a href="#" data-gamestate="${gs}" data-player="${player}">**</a>`;
+        link = `<a href="#" data-gamestate="${gs}" data-player="${player}">${getMarker(color)}</a>`;
       }
-      return getMarker(color, link);
+      return link;
     }
 
     let html = `<center>The Captain's Mistress:<br>
