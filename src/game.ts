@@ -19,6 +19,7 @@ const cellP2 = 2;
 
 type cellType = 99 | 1 | 2;
 
+let soiLinkType = true;
 
 export class Game {
   gameState: IGameState;
@@ -57,6 +58,10 @@ export class Game {
     this.gameState.soiRoom = soiRoom;
   }
 
+  setDevLinkType() {
+    soiLinkType = false;
+  }
+
   setSubmitAction(callback: (mistress: Game) => void) {
     this.submitCallback = callback;
   }
@@ -72,8 +77,18 @@ export class Game {
     function getButton(color: string, gamestate: IGameState) {
       const base32 = new Base32();
       const gs = base32.encode(JSON.stringify(gamestate));
-      const link = `#r-jsgames(**),${gs}`;
-      // const link = `<a href="#" data-gamestate="${gs}" data-player="${gamestate.whichPlayer}">**</a>`;
+      let link: string;
+
+      if (soiLinkType) {
+        link = `#r-jsgames(**),${gs}`;
+      } else {
+        let player = gamestate.player1;
+        if (player === gamestate.whichPlayer) {
+          player = gamestate.player2;
+        }
+
+        link = `<a href="#" data-gamestate="${gs}" data-player="${player}">**</a>`;
+      }
       return getMarker(color, link);
     }
 
