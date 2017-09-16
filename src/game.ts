@@ -3,7 +3,7 @@
 interface IGameState {
   gameCode: "cm";
   soiRoom: string;
-  board: cellType[][];
+  board: string;
   player1: string;
   player2: string;
   gameId: number;
@@ -13,11 +13,11 @@ interface IGameState {
 }
 
 
-const cellEmpty = 99;
+const cellEmpty = 9;
 const cellP1 = 1;
 const cellP2 = 2;
 
-type cellType = 99 | 1 | 2;
+type cellType = 9 | 1 | 2;
 
 
 let soiLinkType = true;
@@ -33,7 +33,7 @@ export class Game {
     this.gameState = {
       gameCode: "cm",
       soiRoom: null,
-      board: [],
+      board: "",
       player1: null,
       player2: null,
       gameId: -1,
@@ -43,19 +43,38 @@ export class Game {
     }
 
     for (let x = 0; x < this.board_x; x++) {
-      this.gameState.board[x] = [];
+      // this.gameState.board[x] = [];
       for (let y = 0; y < this.board_y; y++) {
         this.setPoint(this.gameState, x, y, cellEmpty);
       }
     }
   }
 
+  getIndex(x1: number, y1: number) {
+    // Yes, yes, this is horribly hacky!
+    // My brain hurts too much to do the math right now.
+    let idx = 0;
+    for (let x = 0; x < this.board_x; x++) {
+      for (let y = 0; y < this.board_y; y++) {
+        if (x === x1 && y === y1) {
+          return idx;
+        }
+        idx++;
+      }
+    }
+  }
+
   setPoint(gameState: IGameState, x: number, y: number, value: cellType) {
-    gameState.board[x][y] = value;
+    const index = this.getIndex(x, y);
+    const arr = gameState.board.split("");
+    arr[index] = "" + value;
+    gameState.board = arr.join("");
   }
 
   getPoint(gameState: IGameState, x: number, y: number) {
-    return gameState.board[x][y];
+    const index = this.getIndex(x, y);
+    const arr = gameState.board.split("");
+    return +arr[index] as cellType;
   }
 
   init(name1: string, name2: string, soiRoom: string) {
