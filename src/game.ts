@@ -19,6 +19,7 @@ const cellP2 = 2;
 
 type cellType = 99 | 1 | 2;
 
+
 let soiLinkType = true;
 
 export class Game {
