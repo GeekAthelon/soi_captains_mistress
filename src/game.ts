@@ -45,9 +45,17 @@ export class Game {
     for (let x = 0; x < this.board_x; x++) {
       this.gameState.board[x] = [];
       for (let y = 0; y < this.board_y; y++) {
-        this.gameState.board[x][y] = cellEmpty;
+        this.setPoint(this.gameState, x, y, cellEmpty);
       }
     }
+  }
+
+  setPoint(gameState: IGameState, x: number, y: number, value: cellType) {
+    gameState.board[x][y] = value;
+  }
+
+  getPoint(gameState: IGameState, x: number, y: number) {
+    return gameState.board[x][y];
   }
 
   init(name1: string, name2: string, soiRoom: string) {
@@ -105,7 +113,7 @@ export class Game {
     for (let y = 0; y < this.board_y; y++) {
       html += "<br>";
       for (let x = 0; x < this.board_x; x++) {
-        const cell = this.gameState.board[x][y]
+        const cell = this.getPoint(this.gameState, x, y);
 
         switch (cell) {
           case cellEmpty:
@@ -165,10 +173,10 @@ export class Game {
 
   play(player: cellType, column: number, gameState: IGameState) {
     for (let y = this.board_y - 1; y >= 0; y--) {
-      const cell = gameState.board[column][y];
+      const cell = this.getPoint(gameState, column, y);
       console.log(`cell = `, column, `y = ${y}`, cell);
       if (cell === cellEmpty) {
-        gameState.board[column][y] = player;
+        this.setPoint(gameState, column, y, player);
         return true;
       }
     }
