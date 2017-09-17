@@ -10,10 +10,9 @@ describe('Captain\'s Mistress Control Flow', () => {
     const encoded = base32.encode(testString);
     const decoded = base32.decode(encoded);
 
-    console.log("TS", testString);
-    console.log("EN", encoded);
-    console.log("DE", decoded);
-
+    // console.log("TS", testString);
+    // console.log("EN", encoded);
+    // console.log("DE", decoded);
 
     // assert
     expect(decoded).toBe(testString);
@@ -29,8 +28,7 @@ describe('Captain\'s Mistress Control Flow', () => {
 
     it('constructor should valid board', () => {
       const mistress = new game.Game();
-      expect(mistress.gameState.board.length).toBe(mistress.board_x);
-      expect(mistress.gameState.board[0].length).toBe(mistress.board_y);
+      expect(mistress.gameState.board.length).toBe(mistress.board_x * mistress.board_y);
     });
   });
 

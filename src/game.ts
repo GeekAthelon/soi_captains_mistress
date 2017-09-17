@@ -192,7 +192,7 @@ export class Game {
   play(player: cellType, column: number, gameState: IGameState) {
     for (let y = this.board_y - 1; y >= 0; y--) {
       const cell = this.getPoint(gameState, column, y);
-      console.log(`cell = `, column, `y = ${y}`, cell);
+      // console.log(`cell = `, column, `y = ${y}`, cell);
       if (cell === cellEmpty) {
         this.setPoint(gameState, column, y, player);
         return true;
