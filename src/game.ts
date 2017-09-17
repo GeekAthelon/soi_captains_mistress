@@ -10,6 +10,7 @@ interface IGameState {
   turn: number;
   gameOver: boolean;
   whichPlayer: string;
+  error: string;
 }
 
 
@@ -38,6 +39,7 @@ export class Game {
       turn: -1,
       gameOver: true,
       whichPlayer: null,
+      error: null,
     }
 
     for (let x = 0; x < this.board_x; x++) {
@@ -181,10 +183,8 @@ export class Game {
     const cp = user.toLowerCase().replace(/[^a-z0-0]/g, "");
 
     if (wp.indexOf(cp) !== 0) {
-      alert(`Sorry, ${user}, it is not your turn.  It is ${realPlayer}'s turn.'`);
-      this.submitCallback(null);
+      gameState.error = `...Sorry, ${user}, it is not your turn.\nIt is ${realPlayer}'s turn.'`
     }
-
     this.gameState = gameState;
     this.submitCallback(this);
   }
