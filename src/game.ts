@@ -18,7 +18,7 @@ const cellEmpty = 9;
 export const cellP1 = 1;
 export const cellP2 = 2;
 
-export type cellType = 9 | 1 | 2;
+export type cellType = 9 | 1 | 2 | 5;
 let soiLinkType = true;
 
 export class Game {
@@ -213,20 +213,52 @@ export class Game {
       { dx: 0, dy: 1 },
       { dx: 1, dy: 0 },
       { dx: -1, dy: 1 },
-      { dx: 1, dy: -1 }
+      { dx: 1, dy: 1 }
     ];
 
     const IN_A_ROW = 4;
     let winFlag = false;
 
+    interface IClusterType {
+      pointValue: cellType;
+      x: number;
+      y: number;
+    }
+
+
     vectors.forEach(vector => {
-      const cluster: cellType[] = [];
+      const cluster: IClusterType[] = [];
+      let vx = x;
+      let vy = y;
+
       for (let i = 0; i < IN_A_ROW; i++) {
-        const vx = x + (i * vector.dx);
-        const vy = y + (i * vector.dy);
-        cluster[i] = this.getPoint(gameState, vx, vy);
+
+        cluster[i] = {
+          pointValue: this.getPoint(gameState, vx, vy),
+          x: vx,
+          y: vy,
+        };
+
+        // this.setPoint(gameState, vx, vy, 5);
+
+        vx += vector.dx;
+        vy += vector.dy;
       }
-      if (cluster.filter(point => point === player).length === IN_A_ROW) {
+
+      const clusterSize = cluster.filter(point => point.pointValue === player).length;
+
+      if (clusterSize === IN_A_ROW) {
+        // const str = cluster.map(cl => cl.pointValue);
+        // console.log("** CLUSTER SIZE", clusterSize, str);
+
+        // console.log("Cluster = ", JSON.stringify(cluster));
+
+        // console.log("TEST1", this.boardToAscii(gameState));
+        // cluster.forEach(cl => {
+        // this.setPoint(gameState, cl.x, cl.y, 5);
+        // })
+        // console.log("TEST2", this.boardToAscii(gameState));
+
         winFlag = true;
       }
     });
@@ -241,6 +273,37 @@ export class Game {
         }
       }
     }
+    return false;
+  }
+
+  boardToAscii(
+    gameState: IGameState
+  ) {
+    let html = "";
+    for (let y = 0; y < this.board_y; y++) {
+      html += "\r\n";
+      for (let x = 0; x < this.board_x; x++) {
+        const cell = this.getPoint(gameState, x, y);
+
+        switch (cell) {
+          case cellEmpty:
+            html += ".";
+            break;
+          case cellP1:
+            html += "*";
+            break;
+          case cellP2:
+            html += "@";
+            break;
+          case 5:
+            html += "?";
+            break;
+          default:
+            html += cell;
+        }
+      }
+    }
+    return html;
   }
 }
 

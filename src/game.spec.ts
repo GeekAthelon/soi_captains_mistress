@@ -45,7 +45,7 @@ describe('Captain\'s Mistress Control Flow', () => {
   });
 
   describe('Check winning conditions', () => {
-    it('should see four in a row direction -', () => {
+    it('four in a row in direction - is a win', () => {
       const mistress = new game.Game();
       mistress.init("Robot1", "AI2.0", "multiloc@soi");
 
@@ -58,9 +58,149 @@ describe('Captain\'s Mistress Control Flow', () => {
 
       const isWin = mistress.checkForWin(game.cellP2, newState);
 
-      expect(isWin).toBeTruthy;
+      expect(isWin).toBeTruthy();
+    });
+
+    it('three in a row in direction - is not a win', () => {
+      const mistress = new game.Game();
+      mistress.init("Robot1", "AI2.0", "multiloc@soi");
+
+      const newState: game.IGameState = JSON.parse(JSON.stringify(mistress.gameState));
+
+      mistress.play(game.cellP2, 0, newState);
+      mistress.play(game.cellP2, 1, newState);
+      mistress.play(game.cellP2, 2, newState);
+      mistress.play(game.cellP2, 4, newState);
+
+      const isWin = mistress.checkForWin(game.cellP2, newState);
+
+      expect(isWin).toBeFalsy();
+    });
+
+    it('four in a row in direction | is a win', () => {
+      const mistress = new game.Game();
+      mistress.init("Robot1", "AI2.0", "multiloc@soi");
+
+      const newState: game.IGameState = JSON.parse(JSON.stringify(mistress.gameState));
+
+      mistress.play(game.cellP2, 0, newState);
+      mistress.play(game.cellP2, 0, newState);
+      mistress.play(game.cellP2, 0, newState);
+      mistress.play(game.cellP2, 0, newState);
+
+      const isWin = mistress.checkForWin(game.cellP2, newState);
+
+      expect(isWin).toBeTruthy();
+    });
+
+    it('three in a row in direction | is not a win', () => {
+      const mistress = new game.Game();
+      mistress.init("Robot1", "AI2.0", "multiloc@soi");
+
+      const newState: game.IGameState = JSON.parse(JSON.stringify(mistress.gameState));
+
+      mistress.play(game.cellP2, 0, newState);
+      mistress.play(game.cellP2, 0, newState);
+      mistress.play(game.cellP2, 0, newState);
+      mistress.play(game.cellP1, 0, newState);
+
+      const isWin = mistress.checkForWin(game.cellP2, newState);
+
+      expect(isWin).toBeFalsy();
+    });
+
+    it('four in a row in direction / is a win', () => {
+      const mistress = new game.Game();
+      mistress.init("Robot1", "AI2.0", "multiloc@soi");
+
+      const newState: game.IGameState = JSON.parse(JSON.stringify(mistress.gameState));
+
+
+      mistress.play(game.cellP1, 1, newState);
+      mistress.play(game.cellP1, 2, newState);
+      mistress.play(game.cellP1, 2, newState);
+      mistress.play(game.cellP1, 3, newState);
+      mistress.play(game.cellP1, 3, newState);
+      mistress.play(game.cellP1, 3, newState);
+
+
+      mistress.play(game.cellP2, 0, newState);
+      mistress.play(game.cellP2, 1, newState);
+      mistress.play(game.cellP2, 2, newState);
+      mistress.play(game.cellP2, 3, newState);
+
+      const isWin = mistress.checkForWin(game.cellP2, newState);
+
+      expect(isWin).toBeTruthy();
+    });
+
+    it('three in a row in direction / is not a win', () => {
+      const mistress = new game.Game();
+      mistress.init("Robot1", "AI2.0", "multiloc@soi");
+
+      const newState: game.IGameState = JSON.parse(JSON.stringify(mistress.gameState));
+
+
+      mistress.play(game.cellP1, 1, newState);
+      mistress.play(game.cellP1, 2, newState);
+      mistress.play(game.cellP1, 2, newState);
+      mistress.play(game.cellP1, 3, newState);
+      mistress.play(game.cellP1, 3, newState);
+      mistress.play(game.cellP1, 3, newState);
+
+      mistress.play(game.cellP2, 1, newState);
+      mistress.play(game.cellP2, 2, newState);
+      mistress.play(game.cellP2, 3, newState);
+
+      const isWin = mistress.checkForWin(game.cellP2, newState);
+
+      expect(isWin).toBeFalsy();
+    });
+
+    it('four in a row in direction \\ is a win', () => {
+      const mistress = new game.Game();
+      mistress.init("Robot1", "AI2.0", "multiloc@soi");
+
+      const newState: game.IGameState = JSON.parse(JSON.stringify(mistress.gameState));
+
+
+      mistress.play(game.cellP1, 3, newState);
+      mistress.play(game.cellP1, 2, newState);
+      mistress.play(game.cellP1, 2, newState);
+      mistress.play(game.cellP1, 1, newState);
+      mistress.play(game.cellP1, 1, newState);
+      mistress.play(game.cellP1, 1, newState);
+
+      mistress.play(game.cellP2, 1, newState);
+      mistress.play(game.cellP2, 2, newState);
+      mistress.play(game.cellP2, 3, newState);
+      mistress.play(game.cellP2, 4, newState);
+
+      const isWin = mistress.checkForWin(game.cellP2, newState);
+
+      expect(isWin).toBeTruthy();
+    });
+
+    it('three in a row in direction \\ is not a win', () => {
+      const mistress = new game.Game();
+      mistress.init("Robot1", "AI2.0", "multiloc@soi");
+
+      const newState: game.IGameState = JSON.parse(JSON.stringify(mistress.gameState));
+
+      mistress.play(game.cellP1, 3, newState);
+      mistress.play(game.cellP1, 2, newState);
+      mistress.play(game.cellP1, 2, newState);
+      mistress.play(game.cellP1, 1, newState);
+      mistress.play(game.cellP1, 1, newState);
+      mistress.play(game.cellP1, 1, newState);
+
+      mistress.play(game.cellP2, 2, newState);
+      mistress.play(game.cellP2, 3, newState);
+      mistress.play(game.cellP2, 4, newState);
+
+      const isWin = mistress.checkForWin(game.cellP2, newState);
+
+      expect(isWin).toBeFalsy();
     });
   });
-
-
-})
+});
