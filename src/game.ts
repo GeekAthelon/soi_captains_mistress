@@ -1,6 +1,6 @@
 // ./node_modules/.bin/tsc src/index.ts --module amd  ./src/game.ts
 
-interface IGameState {
+export interface IGameState {
   gameCode: "cm";
   soiRoom: string;
   board: string;
@@ -15,10 +15,10 @@ interface IGameState {
 
 
 const cellEmpty = 9;
-const cellP1 = 1;
-const cellP2 = 2;
+export const cellP1 = 1;
+export const cellP2 = 2;
 
-type cellType = 9 | 1 | 2;
+export type cellType = 9 | 1 | 2;
 let soiLinkType = true;
 
 export class Game {
@@ -200,6 +200,47 @@ export class Game {
     }
     console.log(`There is no room on column ${(column)}`);
     return false;
+  }
+
+
+  checkWinAtPoint(
+    gameState: IGameState,
+    player: cellType,
+    x: number,
+    y: number
+  ) {
+    const vectors = [
+      { dx: 0, dy: 1 },
+      { dx: 1, dy: 0 },
+      { dx: -1, dy: 1 },
+      { dx: 1, dy: -1 }
+    ];
+
+    const IN_A_ROW = 4;
+    let winFlag = false;
+
+    vectors.forEach(vector => {
+      const cluster: cellType[] = [];
+      for (let i = 0; i < IN_A_ROW; i++) {
+        const vx = x + (i * vector.dx);
+        const vy = y + (i * vector.dy);
+        cluster[i] = this.getPoint(gameState, vx, vy);
+      }
+      if (cluster.filter(point => point === player).length === IN_A_ROW) {
+        winFlag = true;
+      }
+    });
+    return winFlag;
+  }
+
+  checkForWin(player: cellType, gameState: IGameState) {
+    for (let x = 0; x < this.board_x; x++) {
+      for (let y = 0; y < this.board_y; y++) {
+        if (this.checkWinAtPoint(gameState, player, x, y)) {
+          return true;
+        }
+      }
+    }
   }
 }
 

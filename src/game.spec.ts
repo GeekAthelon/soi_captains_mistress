@@ -37,10 +37,28 @@ describe('Captain\'s Mistress Control Flow', () => {
       const mistress = new game.Game();
       mistress.init("Robot1", "AI2.0", "multiloc@soi");
 
-      expect(mistress.gameState.gameOver).toBeTruthy();
+      expect(mistress.gameState.gameOver).toBeFalsy();
       expect(mistress.gameState.player1).toBe("Robot1");
       expect(mistress.gameState.player2).toBe("AI2.0");
       expect(mistress.gameState.turn).toBe(0);
+    });
+  });
+
+  describe('Check winning conditions', () => {
+    it('should see four in a row direction -', () => {
+      const mistress = new game.Game();
+      mistress.init("Robot1", "AI2.0", "multiloc@soi");
+
+      const newState: game.IGameState = JSON.parse(JSON.stringify(mistress.gameState));
+
+      mistress.play(game.cellP2, 0, newState);
+      mistress.play(game.cellP2, 1, newState);
+      mistress.play(game.cellP2, 2, newState);
+      mistress.play(game.cellP2, 3, newState);
+
+      const isWin = mistress.checkForWin(game.cellP2, newState);
+
+      expect(isWin).toBeTruthy;
     });
   });
 
